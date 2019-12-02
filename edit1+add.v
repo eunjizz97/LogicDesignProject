@@ -186,7 +186,7 @@ module	hms_cnt(
 		o_max_hit,
 		i_max_cnt,
 		i_sw_reset,
-		i_stopw_en,
+//		i_stopw_en,
 //		i_mode,
 //		sw6,
 		clk,
@@ -197,7 +197,7 @@ output		o_max_hit		;
 
 input	[5:0]	i_max_cnt		;
 input		i_sw_reset		;
-input  		i_stopw_en 		;
+//input  		i_stopw_en 		;
 input		clk			;
 input		rst_n			;
 
@@ -207,8 +207,8 @@ reg		o_max_hit		;
 //wire  [1:0] sw_state;
 //assign  {sw_state} = {i_alarm_en, i_sw_reset};
 
-always @(posedge clk or posedge i_sw_reset or negedge rst_n) begin
-	if(rst_n == 1'b0 || i_sw_reset == 1'b1 && i_stopw_en == 1'b0) begin
+always @(posedge clk or negedge rst_n) begin
+	if(rst_n == 1'b0 || i_sw_reset == 1'b1) begin
 		o_hms_cnt <= 6'd0;
 		o_max_hit <= 1'b0;
 	end else begin
@@ -442,7 +442,7 @@ always @(posedge sw3 or negedge rst_n) begin
 end
 
 reg		o_sw_reset		;
-always @(posedge sw6 or negedge rst_n) begin
+always @(posedge sw6 or posedge o_stopw_en or negedge rst_n) begin
 	if(rst_n == 1'b0) begin
 		o_sw_reset <= 1'b0;
 	end else begin
@@ -659,8 +659,8 @@ hms_cnt		u_hms_cnt_sec(
 		.o_hms_cnt	( sec			),
 		.o_max_hit	( o_max_hit_sec		),
 		.i_max_cnt	( 6'd59			),
-		.i_sw_reset	( 1'b0		),
-		.i_stopw_en 	( i_stopw_en	),
+		.i_sw_reset	( i_sw_reset		),
+//		.i_stopw_en 	( i_stopw_en	),
 		.clk		( i_sec_clk		),
 		.rst_n		( rst_n			));
 
@@ -670,8 +670,8 @@ hms_cnt		u_hms_cnt_min(
 		.o_hms_cnt	( min			),
 		.o_max_hit	( o_max_hit_min		),
 		.i_max_cnt	( 6'd59			),
-		.i_sw_reset	( 1'b0		),
-		.i_stopw_en 	( i_stopw_en	),
+		.i_sw_reset	( i_sw_reset		),
+//		.i_stopw_en 	( i_stopw_en	),
 		.clk		( i_min_clk		),
 		.rst_n		( rst_n			));
 
@@ -681,8 +681,8 @@ hms_cnt		u_hms_cnt_hr(
 		.o_hms_cnt	( hr			),
 		.o_max_hit	( o_max_hit_hr		),
 		.i_max_cnt	( 5'd23			),
-		.i_sw_reset	( 1'b0		),
-		.i_stopw_en 	( i_stopw_en	),
+		.i_sw_reset	( i_sw_reset		),
+//		.i_stopw_en 	( i_stopw_en	),
 		.clk		( i_hr_clk		),
 		.rst_n		( rst_n			));
 
@@ -692,8 +692,8 @@ hms_cnt		u_hms_cnt_alarm_sec(
 		.o_hms_cnt	( alarm_sec		),
 		.o_max_hit	( 			),
 		.i_max_cnt	( 6'd59			),
-		.i_sw_reset	( 1'b0		),
-		.i_stopw_en  	( i_stopw_en 	),
+		.i_sw_reset	( i_sw_reset		),
+//		.i_stopw_en  	( i_stopw_en 	),
 		.clk		( i_alarm_sec_clk	),
 		.rst_n		( rst_n			));
 
@@ -702,8 +702,8 @@ hms_cnt		u_hms_cnt_alarm_min(
 		.o_hms_cnt	( alarm_min		),
 		.o_max_hit	( 			),
 		.i_max_cnt	( 6'd59			),
-		.i_sw_reset	( 1'b0		),
-		.i_stopw_en 	(i_stopw_en),
+		.i_sw_reset	( i_sw_reset		),
+//		.i_stopw_en 	(i_stopw_en),
 		.clk		( i_alarm_min_clk	),
 		.rst_n		( rst_n			));
 
@@ -712,8 +712,8 @@ hms_cnt		u_hms_cnt_alarm_hr(
 		.o_hms_cnt	( alarm_hr		),
 		.o_max_hit	( 			),
 		.i_max_cnt	( 5'd23			),
-		.i_sw_reset	( 1'b0		),
-		.i_stopw_en 	(i_stopw_en),
+		.i_sw_reset	( i_sw_reset		),
+//		.i_stopw_en 	(i_stopw_en),
 		.clk		( i_alarm_hr_clk	),
 		.rst_n		( rst_n			));
 
@@ -724,8 +724,8 @@ hms_cnt		u_hms_cnt_ss_sec(
 		.o_hms_cnt	( sw_sec		),
 		.o_max_hit	( o_max_hit_ss_sec	),
 		.i_max_cnt	( 6'd59			),
-		.i_sw_reset	( i_sw_reset		),
-		.i_stopw_en (i_stopw_en),
+		.i_sw_reset	( i_sw_reset	),
+		//.i_stopw_en (i_stopw_en),
 		.clk		( i_ss_sec_clk		),
 		.rst_n		( rst_n			));
 
@@ -737,7 +737,7 @@ hms_cnt		u_hms_cnt_ss_min(
 		.o_max_hit	( o_max_hit_ss_min	),
 		.i_max_cnt	( 6'd59			),
 		.i_sw_reset	( i_sw_reset		),
-		.i_stopw_en (i_stopw_en),
+		//.i_stopw_en (i_stopw_en),
 		.clk		( i_ss_min_clk		),
 		.rst_n		( rst_n			));
 
@@ -749,7 +749,7 @@ hms_cnt		u_hms_cnt_ss_hr(
 		.o_max_hit	( o_max_hit_ss_hr	),
 		.i_max_cnt	( 5'd23			),
 		.i_sw_reset	( i_sw_reset		),
-		.i_stopw_en (i_stopw_en),
+		//.i_stopw_en (i_stopw_en),
 		.clk		( i_ss_hr_clk		),
 		.rst_n		( rst_n			));
 
@@ -1047,6 +1047,7 @@ module	top(
 		i_sw1,
 		i_sw2,
 		i_sw3,
+		i_sw5,
 		i_sw6,
 		clk,
 		rst_n);
@@ -1060,6 +1061,7 @@ input		i_sw0		;
 input		i_sw1		;
 input		i_sw2		;
 input		i_sw3		;
+input		i_sw5		;
 input		i_sw6		;
 input		clk		;
 input		rst_n		;
@@ -1110,6 +1112,7 @@ controller	u_controller(
 				.i_sw1	(i_sw1),
 				.i_sw2	(i_sw2),
 				.i_sw3	(i_sw3),
+				.i_sw5	(i_sw5),
 				.i_sw6	(i_sw6),
 				.clk	(clk),
 				.rst_n	(rst_n));
