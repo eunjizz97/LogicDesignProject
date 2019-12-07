@@ -208,6 +208,7 @@ module	hms_cnt(
 		i_hms_cnt_set,
 		i_max_cnt,
 		i_sw_start,
+		i_mode,
 		clk,
 		rst_n);
 
@@ -216,6 +217,7 @@ output		o_max_hit		;
 
 input	[6:0]	i_max_cnt		;
 input		i_sw_start		;
+input	[2:0]	i_mode			;
 
 input		clk			;
 input		rst_n			;
@@ -225,8 +227,9 @@ input	[6:0]	i_hms_cnt_set		;
 
 reg	[6:0]	o_hms_cnt		;
 reg		o_max_hit		;
-always @(posedge clk or negedge i_sw_start or negedge rst_n) begin
-	if(rst_n == 1'b0 || i_sw_start == 1'b0 ) begin
+
+always @(posedge clk or negedge rst_n) begin
+	if(rst_n == 1'b0 || (i_sw_start == 1'b0 && i_mode == 3'b011) ) begin
 		o_hms_cnt <= i_hms_cnt_start;
 		o_max_hit <= 1'b0;
 	end else begin
@@ -848,6 +851,7 @@ hms_cnt		u_hms_cnt_sec(
 		.i_hms_cnt_set	( 6'd0			),
 		.i_max_cnt	( 6'd59			),
 		.i_sw_start	( o_sw_start		),
+		.i_mode		( i_mode		),
 		.clk		( i_sec_clk		),
 		.rst_n		( rst_n			));
 
@@ -860,6 +864,7 @@ hms_cnt		u_hms_cnt_min(
 		.i_hms_cnt_set	( 6'd0			),
 		.i_max_cnt	( 6'd59			),
 		.i_sw_start	( o_sw_start		),
+		.i_mode		( i_mode		),
 		.clk		( i_min_clk		),
 		.rst_n		( rst_n			));
 
@@ -876,6 +881,7 @@ hms_cnt		u_hms_cnt_hr(
 		.i_hms_cnt_set	( 6'd0			),
 		.i_max_cnt	( 5'd23			),
 		.i_sw_start	( o_sw_start		),
+		.i_mode		( i_mode		),
 		.clk		( i_hr_clk		),
 		.rst_n		( rst_n			));
 
@@ -918,6 +924,7 @@ hms_cnt		u_hms_cnt_hr_half(
 		.i_hms_cnt_set	( 6'd1			),
 		.i_max_cnt	( 4'd12			),
 		.i_sw_start	( o_sw_start		),
+		.i_mode		( i_mode		),
 		.clk		( i_hr_clk		),
 		.rst_n		( rst_n			));
 
@@ -930,6 +937,7 @@ hms_cnt		u_hms_cnt_alarm_sec(
 		.i_hms_cnt_set	( 6'd0			),
 		.i_max_cnt	( 6'd59			),
 		.i_sw_start	( o_sw_start		),
+		.i_mode		( i_mode		),
 		.clk		( i_alarm_sec_clk	),
 		.rst_n		( rst_n			));
 
@@ -941,6 +949,7 @@ hms_cnt		u_hms_cnt_alarm_min(
 		.i_hms_cnt_set	( 6'd0			),
 		.i_max_cnt	( 6'd59			),
 		.i_sw_start	( o_sw_start		),
+		.i_mode		( i_mode		),
 		.clk		( i_alarm_min_clk	),
 		.rst_n		( rst_n			));
 
@@ -952,6 +961,7 @@ hms_cnt		u_hms_cnt_alarm_hr(
 		.i_hms_cnt_set	( 6'd0			),
 		.i_max_cnt	( 5'd23			),
 		.i_sw_start	( o_sw_start		),
+		.i_mode		( i_mode		),
 		.clk		( i_alarm_hr_clk	),
 		.rst_n		( rst_n			));
 
@@ -967,6 +977,7 @@ hms_cnt		u_hms_cnt_sw_csec(
 		.i_hms_cnt_set	( 6'd0			),
 		.i_max_cnt	( 7'd99			),
 		.i_sw_start	( o_sw_start		),
+		.i_mode		( i_mode		),
 		.clk		( i_sw_csec_clk		),
 		.rst_n		( rst_n			));
 
@@ -980,6 +991,7 @@ hms_cnt		u_hms_cnt_sw_sec(
 		.i_hms_cnt_set	( 6'd0			),
 		.i_max_cnt	( 7'd59			),
 		.i_sw_start	( o_sw_start		),
+		.i_mode		( i_mode		),
 		.clk		( i_sw_sec_clk		),
 		.rst_n		( rst_n			));
 
@@ -993,6 +1005,7 @@ hms_cnt		u_hms_cnt_sw_min(
 		.i_hms_cnt_set	( 6'd0			),
 		.i_max_cnt	( 7'd59			),
 		.i_sw_start	( o_sw_start		),
+		.i_mode		( i_mode		),
 		.clk		( i_sw_min_clk		),
 		.rst_n		( rst_n			));
 
@@ -1028,6 +1041,7 @@ hms_cnt		u_hms_cnt_date(
 		.i_hms_cnt_set	( 6'd1			),
 		.i_max_cnt	( i_max_cnt_date	),
 		.i_sw_start	( o_sw_start		),
+		.i_mode		( i_mode		),
 		.clk		( i_date_clk		),
 		.rst_n		( rst_n			));
 
@@ -1041,6 +1055,7 @@ hms_cnt		u_hms_cnt_month(
 		.i_hms_cnt_set	( 6'd1			),
 		.i_max_cnt	( 4'd11			),
 		.i_sw_start	( o_sw_start		),
+		.i_mode		( i_mode		),
 		.clk		( i_month_clk		),
 		.rst_n		( rst_n			));
 
@@ -1054,6 +1069,7 @@ hms_cnt		u_hms_cnt_year(
 		.i_hms_cnt_set	( 1'd0			),
 		.i_max_cnt	( 7'd99			),
 		.i_sw_start	( o_sw_start		),
+		.i_mode		( i_mode		),
 		.clk		( i_year_clk		),
 		.rst_n		( rst_n			));
 
