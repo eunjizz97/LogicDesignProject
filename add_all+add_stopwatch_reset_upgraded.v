@@ -228,7 +228,7 @@ input	[6:0]	i_hms_cnt_set		;
 reg	[6:0]	o_hms_cnt		;
 reg		o_max_hit		;
 
-always @(posedge clk or negedge rst_n) begin
+always @(posedge clk or posedge i_mode or negedge i_sw_start or negedge rst_n) begin
 	if(rst_n == 1'b0 || (i_sw_start == 1'b0 && i_mode == 3'b011) ) begin
 		o_hms_cnt <= i_hms_cnt_start;
 		o_max_hit <= 1'b0;
