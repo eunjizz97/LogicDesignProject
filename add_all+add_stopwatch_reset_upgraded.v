@@ -225,7 +225,7 @@ input	[6:0]	i_hms_cnt_set		;
 
 reg	[6:0]	o_hms_cnt		;
 reg		o_max_hit		;
-always @(posedge clk or negedge rst_n) begin
+always @(posedge clk or negedge i_sw_start or negedge rst_n) begin
 	if(rst_n == 1'b0 || i_sw_start == 1'b0 ) begin
 		o_hms_cnt <= i_hms_cnt_start;
 		o_max_hit <= 1'b0;
@@ -783,7 +783,7 @@ module	hrminsec(
 		i_sw_sec_clk,
 		i_sw_min_clk,
 		i_alarm_en,
-//		i_sw_reset,
+		i_sw_start,
 		clk,
 		rst_n);
 
@@ -822,7 +822,7 @@ input		i_sw_sec_clk	;
 input		i_sw_min_clk	;
 
 input		i_alarm_en	;
-//input 		i_sw_reset	;
+input 		i_sw_start	;
 
 input		clk		;
 input		rst_n		;
@@ -1551,7 +1551,7 @@ hrminsec	u_hrminsec(	.o_sec		(o_sec),
 				.i_sw_csec_clk	(o_sw_csec_clk),
 				.i_sw_sec_clk	(o_sw_sec_clk),
 				.i_sw_min_clk	(o_sw_min_clk),
-				//.i_sw_reset 	(o_sw_reset),
+				.i_sw_start 	(o_sw_start),
 				.i_alarm_en	(o_alarm_en),
 				.clk		(clk),
 				.rst_n		(rst_n));
