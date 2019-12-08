@@ -1823,6 +1823,7 @@ wire		o_alarm_hr_clk	;
 wire		o_sw_csec_clk	;
 wire		o_sw_sec_clk	;
 wire		o_sw_min_clk	;
+wire		o_timer_reset ;
 
 controller	u_controller(
 				.o_mode		(o_mode),
@@ -1863,6 +1864,7 @@ controller	u_controller(
 				.i_timer_max_hit_sec(i_timer_max_hit_sec),
 				.i_timer_max_hit_min(i_timer_max_hit_min),
 				.i_timer_max_hit_hr(i_timer_max_hit_hr),
+				.i_timer_reset	(o_timer_reset),
 				.i_sw0	(i_sw0),
 				.i_sw1	(i_sw1),
 				.i_sw2	(i_sw2),
@@ -1878,7 +1880,7 @@ wire	[6:0]	o_min	;
 wire	[6:0]	o_sec	;
 wire	[6:0]	o_hr	;
 wire		o_alarm_0 ;
-wire		o_timer_reset ;
+
 hrminsec	u_hrminsec(	.o_sec		(o_sec),
 				.o_min		(o_min),
 				.o_hr		(o_hr),
